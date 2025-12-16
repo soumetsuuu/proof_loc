@@ -18,19 +18,19 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Commands {
-    /// Verify attestation and a bounding box constraint
+    /// Verify attestation against bounding box constraint
     Bbox {
         #[arg(long)] attestation: PathBuf,
         /// min_lat,min_lon,max_lat,max_lon (decimal degrees)
         #[arg(long)] bbox: String,
     },
-    /// Verify attestation and a circular (radius meters) constraint
+    /// Verify attestation against circular constraint
     Circle {
         #[arg(long)] attestation: PathBuf,
         /// center_lat,center_lon,radius_meters
         #[arg(long)] circle: String,
     },
-    /// Verify attestation and a polygon constraint
+    /// Verify attestation against polygon constraint
     Polygon {
         #[arg(long)] attestation: PathBuf,
         /// Path to JSON array of [lat, lon] pairs for exterior ring
