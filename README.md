@@ -30,7 +30,6 @@ This project implements a phased approach to building a privacy preserving locat
      - **Polygon**: Point in polygon containment (using `geo` crate)
 
 
-
 ### Run
 
 **Build all crates:**
