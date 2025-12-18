@@ -1,0 +1,13 @@
+[package]
+name = "location-proof-lib"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+alloy-sol-types = { workspace = true }
+serde = { version = "1.0.200", default-features = false, features = ["derive", "alloc"] }
+sha2 = "0.10"
+attestation_types = { path = "../../attestation_types" }
+attestation_verifier = { path = "../../attestation_verifier" }
+
+[dev-dependencies]
