@@ -1,0 +1,8 @@
+**/target
+.cargo
+/tmp
+pgo-data.profdata
+.DS_Store
+**/proof-with-pis.json
+**/proof-with-io.json
+.env

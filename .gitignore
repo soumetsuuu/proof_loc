@@ -1,5 +1,4 @@
-/polygon.json
-/att_nyc.json
-/att.json
+/*.json
 misc/
 target/
+/crates/location_proof/.vscode/settings.json

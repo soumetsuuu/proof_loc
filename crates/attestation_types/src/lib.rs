@@ -20,8 +20,8 @@ pub struct Attestation {
     pub nonce_b64: String,
     pub key_id: String,
     pub assertion_b64: String,
-    /// Optional JSON string that, in the mock flow, contains the P-256 public key
-    /// used to verify the assertion. Real iOS would carry an Apple-signed
+    /// Optional JSON string that, in the mock flow, contains the P256 public key
+    /// used to verify the assertion. Real iOS would carry an Apple signed
     /// attestation object binding the key to the app.
     pub attestation_object: Option<String>,
 }

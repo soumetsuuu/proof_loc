@@ -1,0 +1,10 @@
+[package]
+name = "location-proof-program"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sp1-zkvm = "5.2.2"
+alloy-sol-types = { workspace = true }
+location-proof-lib = { path = "../lib" }
+serde = { version = "1.0.200", default-features = false, features = ["derive", "alloc"] }
