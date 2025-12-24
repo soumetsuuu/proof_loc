@@ -1,4 +1,5 @@
 [workspace]
+nested = true
 members = [
     "lib",
     "program",

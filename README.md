@@ -1,9 +1,9 @@
 # Location Proof with SP1 zkVM
 
-Zeroknowledge proof system for iOSstyle location attestations using [SP1](https://github.com/succinctlabs/sp1). Proves that a cryptographically signed location satisfies a constraint (bounding box, circle, or polygon) without revealing the exact coordinates.
+Zero knowledge proof system for iOSstyle location attestations (in this project: represented as a P256 ECDSA singature) using [SP1](https://github.com/succinctlabs/sp1). Proves that a cryptographically signed location satisfies a constraint (bounding box, circle, or polygon) without revealing the exact coordinates.
 
 - **PrivacyPreserving**: Exact coordinates never leave the zkVM; only constraint satisfaction is proven
-- **Cryptographic Verification**: P256 ECDSA signature verification inside the zkVM (without precompile)
+- **Cryptographic Verification**: P256 ECDSA signature verification inside the zkVM (without precompile optimizations)
 - **Constraint Types**: Bounding box, circular radius, or arbitrary polygon regions
 - Constraint parameters are hashed (SHA256) and committed in the proof
 
@@ -34,10 +34,10 @@ This produces an attestation JSON file with:
 Run the SP1 program in execute mode (fast, no proof generation) to verify a bounding box constraint:
 
 ```bash
-cd crates/location_proof/script
+cd crates/location_proof/
 cargo run --release -- \
   --execute \
-  --attestation-path ../../../att_nyc.json \
+  --attestation-path ../../att_nyc.json \
   --constraint-type 0 \
   --bbox-min-lat 406000000 \
   --bbox-min-lon=-741500000 \
@@ -64,7 +64,7 @@ Total cycles: 12379555
 ```bash
 cargo run --release -- \
   --execute \
-  --attestation-path ../../../att_nyc.json \
+  --attestation-path ../../att_nyc.json \
   --constraint-type 1 \
   --circle-lat 407128000 \
   --circle-lon=-740060000 \
@@ -75,26 +75,34 @@ cargo run --release -- \
 ```bash
 cargo run --release -- \
   --execute \
-  --attestation-path ../../../att_nyc.json \
+  --attestation-path ../../att_nyc.json \
   --constraint-type 2 \
   --polygon-coords "406000000,-742000000,408000000,-742000000,408000000,-738000000,406000000,-738000000"
 ```
 
+### 4. Submit to Succinct Prover Network
+
+Folow the intructions to deposit PROVE into your requester account: https://docs.succinct.xyz/docs/sp1/prover-network/quickstart then run
+
+```bash 
+cargo run --bin network --release -- --attestation-path ../../att_nyc.json   --constraint-type 0   --bbox-min-lat 406000000   --bbox-min-lon=-741500000   --bbox-max-lat 408000000   --bbox-max-lon=-739000000
+```
+
 ## Crates Structure
 
-- **`crates/attestation_mock_client`**: CLI tool to generate mock signed attestations
+- **`crates/attestation_mock_client`**: Generate mock signed attestations
 - **`crates/attestation_types`**: Shared types for attestations
 - **`crates/attestation_verifier`**: P256 signature verification and geometry checks
-- **`crates/location_proof/`**: SP1 zkVM program and proving script
-  - `program/`: SP1 guest program (runs inside zkVM)
-  - `script/`: Host side script to orchestrate proving
+- **`crates/location_proof/`**: 
+  - `program/`: Contains program whose execution is being proved
+  - `script/`: Scripts for local execution / submitting to succinct network
 
 ## General Ideas
 
 1. **Attestation Generation**: Mock client generates a P256 signed attestation with lat/lon/timestamp
 2. **zkVM Execution**: SP1 program verifies the signature and checks constraint satisfaction
 3. **Public Output**: Only the constraint hash, satisfaction result, and timestamp are revealed
-4. **Privacy**: Exact coordinates remain private inside the zkVM
+4. **Privacy**: Exact coordinates only revealed to prover
 
 ## Coordinate Scaling
 
